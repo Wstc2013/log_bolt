@@ -1,0 +1,12 @@
+[mysql]
+hostname = 192.168.199.208
+username = root
+password = 1qaz@wsx
+port = 3306
+
+[redis]
+hostname = 192.168.199.208
+port = 6379
+
+[log]
+dir = /data/log_bolt/logs

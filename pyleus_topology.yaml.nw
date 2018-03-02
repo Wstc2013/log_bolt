@@ -1,0 +1,186 @@
+name: log_bolt
+workers: 1
+topology:
+    - spout:
+        name: login_spout
+        type: kafka
+        options:
+            #配置kafka的topic
+            topic: LOGIN
+            #配置zookeeper地址，多个用逗号隔开
+            zk_hosts: 192.168.199.208:32181
+            #配置给kafka存储consumer offsets的ZK Root Path
+            zk_root: /pyleus/partition_login
+            #Kafka consumer ID
+            consumer_id: login
+            #定义需要从某个offset开始吗
+            #默认为false
+            from_start: false
+            #start_offset_time: 300
+            binary_data: true
+    - spout:
+        name: pay_spout
+        type: kafka
+        options:
+            #配置kafka的topic
+            topic: PAY
+            #配置zookeeper地址，多个用逗号隔开
+            zk_hosts: 192.168.199.208:32181
+            #配置给kafka存储consumer offsets的ZK Root Path
+            zk_root: /pyleus/partition_pay
+            #Kafka consumer ID
+            consumer_id: pay
+            #定义需要从某个offset开始吗
+            #默认为false
+            from_start: false
+            #start_offset_time: 1500187297
+            binary_data: true
+    - spout:
+        name: settlement_spout
+        type: kafka
+        options:
+            #配置kafka的topic
+            topic: SETTLEMENT
+            #配置zookeeper地址，多个用逗号隔开
+            zk_hosts: 192.168.199.208:32181
+            #配置给kafka存储consumer offsets的ZK Root Path
+            zk_root: /pyleus/partition_settlement
+            #Kafka consumer ID
+            consumer_id: settlement
+            #定义需要从某个offset开始吗
+            #默认为false
+            from_start: false
+            #start_offset_time: 1500187297
+            binary_data: true
+    - spout:
+        name: gameresult_spout
+        type: kafka
+        options:
+            #配置kafka的topic
+            topic: GAMERESULT
+            #配置zookeeper地址，多个用逗号隔开
+            zk_hosts: 192.168.199.208:32181
+            #配置给kafka存储consumer offsets的ZK Root Path
+            zk_root: /pyleus/partition_game
+            #Kafka consumer ID
+            consumer_id: game
+            #定义需要从某个offset开始吗
+            #默认为false
+            from_start: false
+            #start_offset_time: 1500187297
+            binary_data: true
+    - spout:
+        name: online_spout
+        type: kafka
+        options:
+            #配置kafka的topic
+            topic: ONLINE
+            #配置zookeeper地址，多个用逗号隔开
+            zk_hosts: 192.168.199.208:32181
+            #配置给kafka存储consumer offsets的ZK Root Path
+            zk_root: /pyleus/partition_online
+            #Kafka consumer ID
+            consumer_id: online
+            #定义需要从某个offset开始吗
+            #默认为false
+            from_start: false
+            #start_offset_time: 1500187297
+            binary_data: true
+    - spout:
+        name: preorder_spout
+        type: kafka
+        options:
+            #配置kafka的topic
+            topic: PREORDER
+            #配置zookeeper地址，多个用逗号隔开
+            zk_hosts: 192.168.199.208:32181
+            #配置给kafka存储consumer offsets的ZK Root Path
+            zk_root: /pyleus/partition_preorder
+            #Kafka consumer ID
+            consumer_id: preorder
+            #定义需要从某个offset开始吗
+            #默认为false
+            from_start: false
+            #start_offset_time: 1500187297
+            binary_data: true
+    - spout:
+        name: bindphone_spout
+        type: kafka
+        options:
+            #配置kafka的topic
+            topic: BINDPHONE
+            #配置zookeeper地址，多个用逗号隔开
+            zk_hosts: 192.168.199.208:32181
+            #配置给kafka存储consumer offsets的ZK Root Path
+            zk_root: /pyleus/partition_bindphone
+            #Kafka consumer ID
+            consumer_id: bindphone
+            #定义需要从某个offset开始吗
+            #默认为false
+            from_start: false
+            #start_offset_time: 1500187297
+            binary_data: true
+    - spout:
+        name: bindalipay_spout
+        type: kafka
+        options:
+            #配置kafka的topic
+            topic: BINDALIPAY
+            #配置zookeeper地址，多个用逗号隔开
+            zk_hosts: 192.168.199.208:32181
+            #配置给kafka存储consumer offsets的ZK Root Path
+            zk_root: /pyleus/partition_bindalipay
+            #Kafka consumer ID
+            consumer_id: bindalipay
+            #定义需要从某个offset开始吗
+            #默认为false
+            from_start: false
+            #start_offset_time: 1500187297
+            binary_data: true
+    - bolt:
+        name: bolt_kafka_login
+        module: log_bolt.bolt_kafka_login
+        groupings:
+          - global_grouping: login_spout
+    - bolt:
+        name: bolt_kafka_pay
+        module: log_bolt.bolt_kafka_pay
+        parallelism_hint: 3
+        groupings:
+          - shuffle_grouping: pay_spout
+    - bolt:
+        name: bolt_kafka_settlement
+        module: log_bolt.bolt_kafka_settlement
+        parallelism_hint: 3
+        groupings:
+          - shuffle_grouping: settlement_spout
+    - bolt:
+        name: bolt_kafka_gameresult
+        module: log_bolt.bolt_kafka_gameresult
+        parallelism_hint: 3
+        groupings:
+          - shuffle_grouping: gameresult_spout
+    - bolt:
+        name: bolt_kafka_online
+        module: log_bolt.bolt_kafka_online
+        parallelism_hint: 3
+        groupings:
+          - shuffle_grouping: online_spout
+    - bolt:
+        name: bolt_kafka_preorder
+        module: log_bolt.bolt_kafka_preorder
+        parallelism_hint: 3
+        groupings:
+          - shuffle_grouping: preorder_spout
+    - bolt:
+        name: bolt_kafka_bindphone
+        module: log_bolt.bolt_kafka_bindphone
+        parallelism_hint: 3
+        groupings:
+          - shuffle_grouping: bindphone_spout
+    - bolt:
+        name: bolt_kafka_bindalipay
+        module: log_bolt.bolt_kafka_bindalipay
+        parallelism_hint: 3
+        groupings:
+          - shuffle_grouping: bindalipay_spout

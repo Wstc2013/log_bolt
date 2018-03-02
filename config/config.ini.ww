@@ -1,0 +1,12 @@
+[mysql]
+hostname = 192.168.100.6
+username = stromuser
+password = QnUN9YkMcd81
+port = 3306
+
+[redis]
+hostname = 192.168.100.7
+port = 6379
+
+[log]
+dir = /data/log_bolt/logs
